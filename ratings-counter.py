@@ -17,8 +17,12 @@ lines = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/
 # Side note: map is not inplace -> Return only :)
 ratings = lines.map(lambda x: x.split()[2])
 # Finally, store the countByValue() of the ratings RDD as results -> This is our action
+# RDD [3, 3, 1, 2, 1] --> [(3,2), (1,2), (2,1)]
+# https://spark.apache.org/docs/2.1.0/api/python/pyspark.html
+# countByValue returns the count of each unique value in this RDD as a dictionary of (value, count) pairs.
 result = ratings.countByValue()
 
+# Python code - Create ordered dictionary and print them
 sortedResults = collections.OrderedDict(sorted(result.items()))
 for key, value in sortedResults.items():
     print("%s %i" % (key, value))
