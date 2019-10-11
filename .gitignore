@@ -105,6 +105,7 @@ venv.bak/
 
 # IntelliJ
 .idea/
+*.iml
 
 # Data Folders
 data/
