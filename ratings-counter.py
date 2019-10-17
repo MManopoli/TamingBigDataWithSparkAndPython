@@ -20,7 +20,7 @@ ratings = lines.map(lambda x: x.split()[2])
 # RDD [3, 3, 1, 2, 1] --> [(3,2), (1,2), (2,1)]
 # https://spark.apache.org/docs/2.1.0/api/python/pyspark.html
 # countByValue returns the count of each unique value in this RDD as a dictionary of (value, count) pairs.
-result = ratings.countByValue()
+result: dict = ratings.countByValue()
 
 # Python code - Create ordered dictionary and print them
 sortedResults = collections.OrderedDict(sorted(result.items()))

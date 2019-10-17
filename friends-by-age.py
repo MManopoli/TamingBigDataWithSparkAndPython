@@ -30,7 +30,7 @@ totalsByAge = rdd.mapValues(lambda x: (x, 1)).reduceByKey(lambda x, y: (x[0] + y
 # mapValues returns an RDD
 averagesByAge = totalsByAge.mapValues(lambda x: x[0] / x[1])
 # Final action - collect the results and return them in a python data structure
-results = averagesByAge.collect()
+results: list = averagesByAge.collect()
 # print the results in the resulting python list
 for result in results:
     print(result)

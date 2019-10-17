@@ -35,7 +35,7 @@ stationTemps = minTemps.map(lambda x: (x[0], x[2]))
 #  x and y are reduced/combined for a given key
 minTemps = stationTemps.reduceByKey(lambda x, y: min(x, y))
 # Collect action - collect the results into a Python list
-results = minTemps.collect()
+results: list = minTemps.collect()
 
 for result in results:
     print("{0}\t{1:.2f}F".format(result[0], result[1]))
