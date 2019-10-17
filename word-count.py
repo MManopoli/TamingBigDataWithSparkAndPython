@@ -19,6 +19,8 @@ bookWords = bookLines.flatMap(lambda x: x.split())
 book_word_counts: dict = bookWords.countByValue()
 
 for word, count in book_word_counts.items():
+    # Attempt to encode the word (key) as ascii so it'll print
     cleanWord = word.encode(encoding='ascii', errors='ignore')
+    # If the word (key) can be encoded as ascii, print the count
     if cleanWord:
         print(cleanWord.decode() + " " + str(count))
