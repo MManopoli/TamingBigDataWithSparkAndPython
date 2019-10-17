@@ -7,7 +7,9 @@ sc = SparkContext(conf=conf)
 input = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/Book.txt")
 
 def normalizeWords(text):
-    return re.compile(r'\W+', re.UNICODE).split(text.lower())
+    # Break up text based on words using '\W+', coding is unicode, and make everything lowercase
+    # FMI - unicode a-z, A-Z, 0-9 are the only allowed elements of a word when using \W
+    return re.compile(r"\W+", re.UNICODE).split(text.lower())
 
 
 words = input.flatMap(normalizeWords)
