@@ -1,3 +1,4 @@
+# The objective is to find the average number of friends for each person of a given age
 from pyspark import SparkConf, SparkContext
 
 # Set Master as "local" - local machine + single thread / process
