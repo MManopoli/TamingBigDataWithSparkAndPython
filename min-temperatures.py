@@ -9,6 +9,7 @@ sc = SparkContext(conf=conf)
 
 # Sample data line: "ITE00100554,18000101,TMAX,-75,,,E,"
 # Columns are "weather station id, date, entry type, temperature in tenths of a degree celsius, etc, etc, etc..."
+# Note: There is also an entry for precipitation where the 4th column is precipitation rather than temperature
 def parseLine(line):
     fields = line.split(',')
     stationID = fields[0]
