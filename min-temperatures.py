@@ -32,7 +32,7 @@ stationTemps = minTemps.map(lambda x: (x[0], x[2]))
 # So, the lambda function returns the minimum of two inputs, x and y, which defines the result when two elements
 #  x and y are reduced/combined for a given key
 minTemps = stationTemps.reduceByKey(lambda x, y: min(x, y))
-# Collect action - collect the results into a Python data structure
+# Collect action - collect the results into a Python list
 results = minTemps.collect()
 
 for result in results:
