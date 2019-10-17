@@ -1,6 +1,10 @@
+# Objective is to find the minimum temperature observed by each weather station
 from pyspark import SparkConf, SparkContext
 
+# Set Master as "local" - local machine + single thread / process
+# Set AppName as "MinTemperatures"
 conf = SparkConf().setMaster("local").setAppName("MinTemperatures")
+# Instantiate SparkContext object with conf above
 sc = SparkContext(conf=conf)
 
 def parseLine(line):
