@@ -11,12 +11,14 @@ def normalizeWords(text):
 
 
 words = input.flatMap(normalizeWords)
+# Hard code what countByValue does (because we don't want an action / Python dict yet, we want an RDD)
 # 1. map the words to a key value pair (word, 1)
 # 2. reduce by key == word by adding the value elements == 1 --> this will give you key == word, value == count
 wordCounts = words.map(lambda x: (x, 1)).reduceByKey(lambda x, y: x + y)
 # 1. swap the key and value so count is now the key
 # 2. Sort the RDD by the key element (now count)
 wordCountsSorted = wordCounts.map(lambda x: (x[1], x[0])).sortByKey()
+# Now we want the final result as a sorted list
 results: list = wordCountsSorted.collect()
 
 for result in results:
