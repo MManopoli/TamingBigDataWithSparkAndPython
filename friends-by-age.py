@@ -21,9 +21,14 @@ rdd = lines.map(parseLine)
 # 1. mapValues - map values == numFriends to (numFriends, 1) for counting later --> returns an RDD
 # 2. reduceByKey - aggregate everything for each age where two values (numFriends, 1) called x and y are
 #                  combined according to the functions defined: result tuple value 0 = x[0] + y[0] and
-#                  result tuple value 1 = x[1] + y[1]
+#                  result tuple value 1 = x[1] + y[1] --> returns an RDD
 totalsByAge = rdd.mapValues(lambda x: (x, 1)).reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1]))
+# Finally, get the average number of friends for each age by dividing the summed number of friends by the
+#  number of people that are a given age
+# mapValues returns an RDD
 averagesByAge = totalsByAge.mapValues(lambda x: x[0] / x[1])
+# Final action - collect the results and return them in a python data structure
 results = averagesByAge.collect()
+# print the results in the resulting python data structure
 for result in results:
     print(result)
