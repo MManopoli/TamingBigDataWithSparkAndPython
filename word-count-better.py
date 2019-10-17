@@ -4,7 +4,7 @@ from pyspark import SparkConf, SparkContext
 conf = SparkConf().setMaster("local").setAppName("WordCount")
 sc = SparkContext(conf=conf)
 
-input = sc.textFile("file:///sparkcourse/book.txt")
+input = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/Book.txt")
 
 def normalizeWords(text):
     return re.compile(r'\W+', re.UNICODE).split(text.lower())
