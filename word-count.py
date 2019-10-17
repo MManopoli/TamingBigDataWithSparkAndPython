@@ -7,7 +7,7 @@ conf = SparkConf().setMaster("local").setAppName("WordCount")
 # Instantiate SparkContext object with conf above
 sc = SparkContext(conf=conf)
 
-input = sc.textFile("file:///sparkcourse/book.txt")
+input = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/book.txt")
 words = input.flatMap(lambda x: x.split())
 wordCounts = words.countByValue()
 
