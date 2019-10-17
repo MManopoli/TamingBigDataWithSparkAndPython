@@ -24,7 +24,7 @@ parsedLines = lines.map(parseLine)
 # The filter transformation takes a function that returns a boolean
 # In this case, we want the transform to return an RDD where only entries with "TMIN" as the [1] item are kept
 # This is because we are trying to find the minimum observed temperature by each weather station in 1800, and so
-#  we only need to consider the minimum temperature observed on any given  (labeled "TMIN")
+#  we only need to consider the minimum temperature observed on any given day (labeled "TMIN")
 minTemps = parsedLines.filter(lambda x: "TMIN" in x[1])
 # Strip out the entryType because it's always "TMIN" now
 # This is now a key value pair, stationID = key, temperature = value
