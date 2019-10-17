@@ -14,6 +14,7 @@ def parseLine(line):
     numFriends = int(fields[3])
     return (age, numFriends)
 
+
 # Import and parse the input data into an RDD of lines called lines
 lines = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/fakefriends.csv")
 # Apply the map, defined above as a Python function

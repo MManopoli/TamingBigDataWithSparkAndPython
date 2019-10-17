@@ -17,6 +17,7 @@ def parseLine(line):
     temperature = float(fields[3]) * 0.1 * (9.0 / 5.0) + 32.0  # Convert temp to degrees Fahrenheit
     return (stationID, entryType, temperature)
 
+
 # Import and parse the input data into an RDD of lines called lines
 lines = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/1800.csv")
 # Use the parseLine function defined above to parse the data into a usable RDD
