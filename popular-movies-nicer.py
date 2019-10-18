@@ -10,26 +10,28 @@
 
 # u.item columns:
 #
-# Movie ID|Movie Name|
-# 1|Toy Story (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?Toy%20Story%20(1995)|0|0|0|1|1|1|0|0|0|0|0|0|0|0|0|0|0|0|0
-# 2|GoldenEye (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?GoldenEye%20(1995)|0|1|1|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|0
+# Movie ID|Movie Name|....
+# 1|Toy Story (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?Toy%20Story%20(1995)|0|0|0|1|1|1|0|0|...
+# 2|GoldenEye (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?GoldenEye%20(1995)|0|1|1|0|0|0|0|0|0|...
 
 from pyspark import SparkConf, SparkContext
 
-def loadMovieNames():
+def loadMovieNames() -> dict:
     movieNames = {}
-    with open("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.item") as f:
+    with open("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.item", encoding='iso-8859-1') as f:
         for line in f:
             fields = line.split('|')
             movieNames[int(fields[0])] = fields[1]
     return movieNames
 
-conf = SparkConf().setMaster("local").setAppName("PopularMovies")
+
+conf = SparkConf().setMaster("local[4]").setAppName("PopularMovies")
 sc = SparkContext(conf=conf)
 
-nameDict = sc.broadcast(loadMovieNames())
+nameDict = sc.broadcast(loadMovieNames())  # Broadcast the python movieNames object to each excecutor as nameDict
 
 lines = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.data")
+
 movies = lines.map(lambda x: (int(x.split()[1]), 1))
 movieCounts = movies.reduceByKey(lambda x, y: x + y)
 
@@ -37,9 +39,11 @@ movieCounts = movies.reduceByKey(lambda x, y: x + y)
 # sortedMovies = flipped.sortByKey()
 sortedMovies = movieCounts.sortBy(lambda x: x[1])
 
-sortedMoviesWithNames = sortedMovies.map(lambda countMovie : (nameDict.value[countMovie[1]], countMovie[0]))
+#sortedMoviesWithNames = sortedMovies.map(lambda countMovie : (nameDict.value[countMovie[1]], countMovie[0]))
+# countMovie[0] is the Movie ID because I used sortBy - that's what we lookup in nameDict
+sortedMoviesWithNames = sortedMovies.map(lambda countMovie : (nameDict.value[countMovie[0]], countMovie[1]))
 
-results = sortedMoviesWithNames.collect()
+results: list = sortedMoviesWithNames.collect()
 
 for result in results:
-    print (result)
+    print(result)
