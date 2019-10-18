@@ -44,6 +44,7 @@ mostPopular = totalFriendsByCharacter.max(lambda xy: xy[1])
 
 # Use the lookup function to map / lookup the name
 # Note: lookup(key) -> Python list
+# mostPopularName = namesRdd.lookup(mostPopular[1])[0]
 mostPopularName = namesRdd.lookup(key=mostPopular[0])[0]
 
 # print(str(mostPopularName) + " is the most popular superhero, with " + \
