@@ -27,15 +27,17 @@ namesRdd = names.map(parseNames)
 # 5983 1165 3836 4361 1282 716 4289 4646 6300 5084 2397 4454 1913 5861 5485
 def countCoOccurences(line):
     elements = line.split()
+    # Return the Hero ID and the number of fellow co-appearing hero IDs (length of line - 1)
     return int(elements[0]), (len(elements) - 1)
 
 
 lines = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/Marvel-Graph.txt")
 pairings = lines.map(countCoOccurences)
 
+# Add up all co-appearing hero IDs for each hero ID
 totalFriendsByCharacter = pairings.reduceByKey(lambda x, y: x + y)
 
-#flipped = totalFriendsByCharacter.map(lambda xy : (xy[1], xy[0]))
+# flipped = totalFriendsByCharacter.map(lambda xy : (xy[1], xy[0]))
 # mostPopular = totalFriendsByCharacter.max()
 mostPopular = totalFriendsByCharacter.max(lambda xy: xy[1])
 
