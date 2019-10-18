@@ -14,12 +14,12 @@ conf = SparkConf().setMaster("local[4]").setAppName("PopularMovies")  # Trying o
 sc = SparkContext(conf=conf)
 
 lines = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.data")
+
 movies = lines.map(lambda x: (int(x.split()[1]), 1))
 movieCounts = movies.reduceByKey(lambda x, y: x + y)
 
 # flipped = movieCounts.map(lambda xy: (xy[1], xy[0]))
 # sortedMovies = flipped.sortByKey()
-
 sortedMovies = movieCounts.sortBy(lambda x: x[1])
 
 results: list = sortedMovies.collect()
