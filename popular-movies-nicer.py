@@ -18,6 +18,7 @@ from pyspark import SparkConf, SparkContext
 
 def loadMovieNames() -> dict:
     movieNames = {}
+    # Movie titles include swedish characters which require ISO-8859-1 encoding
     with open("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.item", encoding='iso-8859-1') as f:
         for line in f:
             fields = line.split('|')
