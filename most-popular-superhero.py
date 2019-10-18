@@ -22,7 +22,7 @@ namesRdd = names.map(parseNames)
 # First value = Marvel hero ID
 # Remaining values = hero IDs the first hero ID has appeared with in comic books
 #
-# Note: Hero IDs can span multiple lines
+# Note: The entries for a specific Hero ID can span multiple lines
 #
 # Example:
 # 5983 1165 3836 4361 1282 716 4289 4646 6300 5084 2397 4454 1913 5861 5485
@@ -42,7 +42,9 @@ totalFriendsByCharacter = pairings.reduceByKey(lambda x, y: x + y)
 # mostPopular = totalFriendsByCharacter.max()
 mostPopular = totalFriendsByCharacter.max(lambda xy: xy[1])
 
-mostPopularName = namesRdd.lookup(mostPopular[0])[0]
+# Use the lookup function to map / lookup the name
+# Note: lookup(key) -> Python list
+mostPopularName = namesRdd.lookup(key=mostPopular[0])[0]
 
 # print(str(mostPopularName) + " is the most popular superhero, with " + \
 #     str(mostPopular[0]) + " co-appearances.")
