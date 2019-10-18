@@ -1,6 +1,6 @@
 from pyspark import SparkConf, SparkContext
 
-conf = SparkConf().setMaster("local[4]").setAppName("PopularHero")
+conf = SparkConf().setMaster("local[8]").setAppName("PopularHero")  # Trying out 8 threads
 sc = SparkContext(conf=conf)
 
 # Marvel-Names.txt data format:
