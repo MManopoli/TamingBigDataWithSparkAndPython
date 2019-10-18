@@ -11,6 +11,7 @@ sc = SparkContext(conf=conf)
 # 2549 "HULK III/BRUCE BANNE"
 def parseNames(line):
     fields = line.split('\"')
+    # The encoding for fields[1] is weird - IntelliJ confirms it - explicitly encode this as utf8 here
     return int(fields[0]), fields[1].encode("utf8")
 
 
