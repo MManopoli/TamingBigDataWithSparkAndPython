@@ -154,17 +154,20 @@ def bfsReduce(data1, data2):
 # Create the starting RDD with all of the nodes
 iterationRdd = createStartingRdd()
 
-# We assume we will never have more distance than 9 - so iterate over range(0, 10)
+# We assume we will never have more distance than 10 - so iterate over range(0, 10)
 for iteration in range(0, 10):
     print("Running BFS iteration # " + str(iteration+1))
 
     # Create new vertices as needed to darken or reduce distances in the
     #  reduce stage. If we encounter the node we're looking for as a GRAY
     #  node, then the accumulator will the incremented to signal that we're done.
+    # Note that the flatMap functions does a one to many map, adding the new nodes in the list of
+    #  returned nodes to the RDD
     mapped = iterationRdd.flatMap(bfsMap)
 
     # Note that mapped.count() action here forces the RDD to be evaluated, and
     #  that's the only reason our accumulator is actually updated.
+    # Spark has "Lazy Evaluation" -> nothing is done until an action is executed
     print("Processing " + str(mapped.count()) + " values.")
 
     # Since the count is an action and we have updated the accumulator -> check if we found the target!
