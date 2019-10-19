@@ -15,6 +15,15 @@ hitCounter = sc.accumulator(0)
 
 # convertToBFS sets up initial conditions for the graph
 # convertToBFS converts the input data to node structures that we'll use and update
+#
+# Marvel-Graph.txt data format:
+# First value = Marvel hero ID
+# Remaining values = hero IDs the first hero ID has appeared with in comic books
+#
+# Note: The entries for a specific Hero ID can span multiple lines
+#
+# Example:
+# 5983 1165 3836 4361 1282 716 4289 4646 6300 5084 2397 4454 1913 5861 5485
 def convertToBFS(line):
     # Get all fields on the line
     fields = line.split()
@@ -41,45 +50,53 @@ def convertToBFS(line):
     return (heroID, (connections, distance, color))
 
 
-# Marvel-Graph.txt data format:
-# First value = Marvel hero ID
-# Remaining values = hero IDs the first hero ID has appeared with in comic books
-#
-# Note: The entries for a specific Hero ID can span multiple lines
-#
-# Example:
-# 5983 1165 3836 4361 1282 716 4289 4646 6300 5084 2397 4454 1913 5861 5485
+# Import the file and construct the initial nodes using the convertToBFS function
 def createStartingRdd():
     inputFile = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/Marvel-Graph.txt")
     return inputFile.map(convertToBFS)
 
 
+# Define the logic to be iteratively executed on each node
 def bfsMap(node):
-    characterID = node[0]
-    data = node[1]
-    connections = data[0]
-    distance = data[1]
-    color = data[2]
+    # Extract the values from the node's data: (heroID, (connections, distance, color))
+    characterID = node[0]  # heroID
+    data = node[1]  # (connections, distance, color)
+    connections = data[0]  # connections
+    distance = data[1]  # distance
+    color = data[2]  # color
 
+    # Create a list to store node updates
     results = []
 
-    #If this node needs to be expanded...
+    # If this node needs to be expanded...
+    # Note: initially this is just the starting character's node
     if (color == 'GRAY'):
+        # For each connection to the gray node...
         for connection in connections:
+            # Set the values to overwrite the connection with
             newCharacterID = connection
             newDistance = distance + 1
             newColor = 'GRAY'
+
+            # Check if it's the target character
             if (targetCharacterID == connection):
                 hitCounter.add(1)
 
+            # Create the updated node
             newEntry = (newCharacterID, ([], newDistance, newColor))
+
+            # Append the updated node to the list of node updates (== results)
             results.append(newEntry)
 
-        #We've processed this node, so color it black
+        # Once each connection is processed, this node has been fully processed, so change the color to black
         color = 'BLACK'
 
-    #Emit the input node so we don't lose it.
-    results.append( (characterID, (connections, distance, color)) )
+    # Append the color update for this node (the input node) to the list of results == node updates
+    results.append(
+        (characterID, (connections, distance, color))
+    )
+
+    # Return the list of results containing the new/updated nodes
     return results
 
 
