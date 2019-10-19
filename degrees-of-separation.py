@@ -2,11 +2,11 @@
 from pyspark import SparkConf, SparkContext
 
 conf = SparkConf().setMaster("local[8]").setAppName("DegreesOfSeparation")
-sc = SparkContext(conf = conf)
+sc = SparkContext(conf=conf)
 
 # The characters we wish to find the degree of separation between:
-startCharacterID = 5306 #SpiderMan
-targetCharacterID = 14  #ADAM 3,031 (who?)
+startCharacterID = 5306  # SpiderMan
+targetCharacterID = 14  # ADAM 3,031 (who?)
 
 # Our accumulator, used to signal when we find the target character during
 # our BFS traversal.
