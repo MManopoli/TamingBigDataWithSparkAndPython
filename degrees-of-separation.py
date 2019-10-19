@@ -9,29 +9,50 @@ startCharacterID = 5306  # SpiderMan
 targetCharacterID = 14  # ADAM 3,031 (who?)
 
 # Our accumulator, used to signal when we find the target character during
-# our BFS traversal.
+#  our BFS traversal.
+# Note: An accumulator is a counter shared by all nodes in the cluster
 hitCounter = sc.accumulator(0)
 
+# convertToBFS sets up initial conditions for the graph
+# convertToBFS converts the input data to node structures that we'll use and update
 def convertToBFS(line):
+    # Get all fields on the line
     fields = line.split()
+
+    # Get the heroID for the node
     heroID = int(fields[0])
+
+    # Collect a Python list of all connections (all fields after the first)
     connections = []
     for connection in fields[1:]:
         connections.append(int(connection))
 
+    # Default color for every node that isn't the node for the starting character is 'WHITE'
     color = 'WHITE'
+    # Default distance for every node that isn't the node for the starting character is infinity == 9999
     distance = 9999
 
+    # If it is the starting character - the default color is 'GRAY' and the distance is 0
     if (heroID == startCharacterID):
         color = 'GRAY'
         distance = 0
 
+    # Return the default key == heroID, value = connections, distance, color) pair representing the node
     return (heroID, (connections, distance, color))
 
 
+# Marvel-Graph.txt data format:
+# First value = Marvel hero ID
+# Remaining values = hero IDs the first hero ID has appeared with in comic books
+#
+# Note: The entries for a specific Hero ID can span multiple lines
+#
+# Example:
+# 5983 1165 3836 4361 1282 716 4289 4646 6300 5084 2397 4454 1913 5861 5485
 def createStartingRdd():
     inputFile = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/Marvel-Graph.txt")
     return inputFile.map(convertToBFS)
+
 
 def bfsMap(node):
     characterID = node[0]
@@ -60,6 +81,7 @@ def bfsMap(node):
     #Emit the input node so we don't lose it.
     results.append( (characterID, (connections, distance, color)) )
     return results
+
 
 def bfsReduce(data1, data2):
     edges1 = data1[0]
