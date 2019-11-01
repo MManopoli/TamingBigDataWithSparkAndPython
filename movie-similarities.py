@@ -149,3 +149,10 @@ if len(sys.argv) > 1:
         if similarMovieID == movieID:
             similarMovieID = pair[1]
         print(nameDict[similarMovieID] + "\tscore: " + str(sim[0]) + "\tstrength: " + str(sim[1]))
+
+# Per L28, some possible improvements if you want to try out augmenting this script:
+# 1. Discard bad ratings - only recommend good movies
+# 2. Try different similarity metrics (Pearson Correlation Coefficient, Jaccard Coefficient, Conditional Probability)
+# 3. Adjust the thresholds for minimum co-raters or minimum score
+# 4. Invent a new similarity metric that takes the number of co-raters into account
+# 5. Use genre information in u.items to boost scores from movies in the same genre
