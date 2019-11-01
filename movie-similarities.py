@@ -23,6 +23,10 @@ def loadMovieNames():
 
 # Python 3 doesn't let you pass around unpacked tuples,
 # so we explicitly extract the ratings now.
+
+# Takes in a de-duplicated userRatings of the form userID => ((movieID, rating), (movieID, rating))
+# Returns a new pairing of the form below
+# The form below will have two movies rated by the user as the key and ratings of either movie as the value
 def makePairs(userRatings):
     ratings = userRatings[1]
     (movie1, rating1) = ratings[0]
@@ -30,6 +34,9 @@ def makePairs(userRatings):
     return (movie1, movie2), (rating1, rating2)
 
 
+# Takes in a userRating of the form userID => ((movieID, rating), (movieID, rating)) produced by the self-join
+# Returns True for cases where the first/left movieID is less than the second/right movieID
+# Used as the argument for .filter() to say keep only those flagged as True
 def filterDuplicates(userRatings):
     ratings = userRatings[1]
     (movie1, rating1) = ratings[0]
@@ -37,6 +44,9 @@ def filterDuplicates(userRatings):
     return movie1 < movie2
 
 
+# Takes in input of the form ((movie1, movie2), Iterable<(rating1, rating2)>)
+#  That is - groupByKey has joined the ratings for each user for each possible pair of movies as an iterable
+# Output is the Cosine Similarity score and the number of pairs used to calculate that score
 def computeCosineSimilarity(ratingPairs):
     numPairs = 0
     sum_xx = sum_yy = sum_xy = 0
@@ -93,6 +103,17 @@ moviePairs = uniqueJoinedRatings.map(makePairs)
 # Now collect all ratings for each movie pair and compute similarity
 moviePairRatings = moviePairs.groupByKey()
 
+# From the spark 2.4.4 documentation...
+#
+#    groupByKey([numPartitions])
+#
+# When called on a dataset of (K, V) pairs, .groupByKey() returns a dataset of (K, Iterable<V>) pairs.
+#
+# Note: If you are grouping in order to perform an aggregation (such as a sum or average) over each key, using
+#  reduceByKey or aggregateByKey will yield much better performance.
+# Note: By default, the level of parallelism in the output depends on the number of partitions of the parent RDD.
+#  You can pass an optional numPartitions argument to set a different number of tasks.
+
 # We now have (movie1, movie2) = > (rating1, rating2), (rating1, rating2) ...
 # Can now compute similarities.
 moviePairSimilarities = moviePairRatings.mapValues(computeCosineSimilarity).cache()
@@ -116,7 +137,7 @@ if len(sys.argv) > 1:
         and pairSim[1][0] > scoreThreshold and pairSim[1][1] > coOccurenceThreshold)
 
     # Sort by quality score.
-    results = filteredResults.map(lambda pairSim: (pairSim[1], pairSim[0])).sortByKey(ascending = False).take(10)
+    results = filteredResults.map(lambda pairSim: (pairSim[1], pairSim[0])).sortByKey(ascending=False).take(10)
 
     print("Top 10 similar movies for " + nameDict[movieID])
     for result in results:
