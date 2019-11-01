@@ -56,6 +56,8 @@ def computeCosineSimilarity(ratingPairs):
         sum_xy += ratingX * ratingY
         numPairs += 1
 
+    # Math here is to divide the sum of each pair of ratings multiplied by each other or E (x*y)1 + (x*y)2...
+    #  by the square root of the sum of x^s and the square root of the sum of y^2, because math
     numerator = sum_xy
     denominator = sqrt(sum_xx) * sqrt(sum_yy)
 
@@ -130,13 +132,13 @@ if len(sys.argv) > 1:
 
     movieID = int(sys.argv[1])
 
-    # Filter for movies with this sim that are "good" as defined by
-    # our quality thresholds above
+    # Filter cached moviePairSimilarities for movies that are "good" as defined by
+    #  our quality thresholds above
     filteredResults = moviePairSimilarities.filter(lambda pairSim: \
         (pairSim[0][0] == movieID or pairSim[0][1] == movieID) \
         and pairSim[1][0] > scoreThreshold and pairSim[1][1] > coOccurenceThreshold)
 
-    # Sort by quality score.
+    # Sort by quality score and take the top 10.
     results = filteredResults.map(lambda pairSim: (pairSim[1], pairSim[0])).sortByKey(ascending=False).take(10)
 
     print("Top 10 similar movies for " + nameDict[movieID])
