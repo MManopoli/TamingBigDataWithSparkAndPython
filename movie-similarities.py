@@ -4,25 +4,32 @@ from math import sqrt
 
 def loadMovieNames():
     movieNames = {}
-    with open("ml-100k/u.ITEM", encoding='ascii', errors='ignore') as f:
+    with open(
+            "/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.item",
+            encoding='ascii',
+            errors='ignore'
+    ) as f:
         for line in f:
             fields = line.split('|')
             movieNames[int(fields[0])] = fields[1]
     return movieNames
 
-#Python 3 doesn't let you pass around unpacked tuples,
-#so we explicitly extract the ratings now.
+
+# Python 3 doesn't let you pass around unpacked tuples,
+# so we explicitly extract the ratings now.
 def makePairs( userRatings ):
     ratings = userRatings[1]
     (movie1, rating1) = ratings[0]
     (movie2, rating2) = ratings[1]
     return ((movie1, movie2), (rating1, rating2))
 
+
 def filterDuplicates( userRatings ):
     ratings = userRatings[1]
     (movie1, rating1) = ratings[0]
     (movie2, rating2) = ratings[1]
     return movie1 < movie2
+
 
 def computeCosineSimilarity(ratingPairs):
     numPairs = 0
