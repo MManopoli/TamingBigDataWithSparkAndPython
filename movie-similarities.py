@@ -3,6 +3,11 @@ from pyspark import SparkConf, SparkContext
 from math import sqrt
 
 
+# u.item columns:
+#
+# Movie ID|Movie Name|....
+# 1|Toy Story (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?Toy%20Story%20(1995)|0|0|0|1|1|1|0|0|...
+# 2|GoldenEye (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?GoldenEye%20(1995)|0|1|1|0|0|0|0|0|0|...
 def loadMovieNames():
     movieNames = {}
     with open(
@@ -59,6 +64,16 @@ nameDict = loadMovieNames()
 
 data = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.data")
 
+# u.data columns:
+#
+# User ID, Movie ID, Rating, Timestamp
+# 196	242	3	881250949
+# 186	302	3	891717742
+# 22	377	1	878887116
+# 244	51	2	880606923
+# 166	346	1	886397596
+# 298	474	4	884182806
+#
 # Map ratings to key / value pairs: user ID => movie ID, rating
 ratings = data.map(lambda l: l.split()).map(lambda l: (int(l[0]), (int(l[1]), float(l[2]))))
 
@@ -68,7 +83,7 @@ joinedRatings = ratings.join(ratings)
 
 # At this point our RDD consists of userID => ((movieID, rating), (movieID, rating))
 
-# Filter out duplicate pairs
+# Filter out duplicate pairs (by only keeping cases where the first/left movieID is less than the second/right movieID)
 uniqueJoinedRatings = joinedRatings.filter(filterDuplicates)
 
 # Now key by (movie1, movie2) pairs.
@@ -82,9 +97,9 @@ moviePairRatings = moviePairs.groupByKey()
 # Can now compute similarities.
 moviePairSimilarities = moviePairRatings.mapValues(computeCosineSimilarity).cache()
 
-# Save the results if desired
-# moviePairSimilarities.sortByKey()
-# moviePairSimilarities.saveAsTextFile("movie-sims")
+# Save the results if desired - Note: this outputs to 4 different text files
+#moviePairSimilarities.sortByKey()
+#moviePairSimilarities.saveAsTextFile("movie-sims")
 
 # Extract similarities for the movie we care about that are "good".
 if len(sys.argv) > 1:
