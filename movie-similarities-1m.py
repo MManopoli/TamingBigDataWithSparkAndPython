@@ -2,12 +2,13 @@ import sys
 from pyspark import SparkConf, SparkContext
 from math import sqrt
 
-#To run on EMR successfully + output results for Star Wars:
-#aws s3 cp s3://sundog-spark/MovieSimilarities1M.py ./
-#aws s3 cp s3://sundog-spark/ml-1m/movies.dat ./
-#spark-submit --executor-memory 1g MovieSimilarities1M.py 260
-
-# My Commands
+# Commands:
+#
+# Go to your AWS console home-page and find EMR under Analytics and start a 5 m4.xlarge cluster ($0.06/hr each)
+# Make sure it's a SPARK 2.4.4 cluster
+#
+# Make sure to configure the "master node" security groups to allow SSH connections from the correct IP, or you can't connect!
+# e.g. Docker_Tutorial_Instance == 172.31.86.187/32
 #
 # Copy over this script
 # scp -i ~/Ubuntu_Standard_1.pem /home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/movie-similarities-1m.py hadoop@ec2-3-92-210-197.compute-1.amazonaws.com:/home/hadoop
@@ -23,6 +24,8 @@ from math import sqrt
 #
 # Execute the script
 # spark-submit --executor-memory 3G MovieSimilarities1M.py 260
+#
+# TERMINATE THE CLUSTER
 
 # movies.dat columns:
 #
