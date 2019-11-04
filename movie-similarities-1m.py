@@ -7,6 +7,23 @@ from math import sqrt
 #aws s3 cp s3://sundog-spark/ml-1m/movies.dat ./
 #spark-submit --executor-memory 1g MovieSimilarities1M.py 260
 
+# My Commands
+#
+# Copy over this script
+# scp -i ~/Ubuntu_Standard_1.pem /home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/movie-similarities-1m.py hadoop@ec2-3-92-210-197.compute-1.amazonaws.com:/home/hadoop
+#
+# Copy over movies.dat
+# scp -i ~/Ubuntu_Standard_1.pem /home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-1m/movies.dat hadoop@ec2-3-92-210-197.compute-1.amazonaws.com:/home/hadoop
+#
+# Connect to the environment - NOTE: THE IP ADDRESS IS RANDOMLY GENERATED EACH TIME YOU SPIN UP A CLUSTER
+# ssh -i ~/Ubuntu_Standard_1.pem hadoop@ec2-3-92-210-197.compute-1.amazonaws.com
+#
+# Change to Python 3 in environment
+# sudo sed -i -e '$a\export PYSPARK_PYTHON=/usr/bin/python3' /etc/spark/conf/spark-env.sh
+#
+# Execute the script
+# spark-submit --executor-memory 3G MovieSimilarities1M.py 260
+
 # movies.dat columns:
 #
 # Movie ID::Movie Name::...
@@ -16,7 +33,7 @@ from math import sqrt
 def loadMovieNames():
     movieNames = {}
     with open(
-            "s3n://sundog-spark/ml-1m/movies.dat",
+            "movies.dat",
             encoding='ascii',
             errors='ignore'
     ) as f:
