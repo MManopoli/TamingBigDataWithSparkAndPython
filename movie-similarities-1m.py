@@ -169,3 +169,17 @@ if len(sys.argv) > 1:
         if similarMovieID == movieID:
             similarMovieID = pair[1]
         print(nameDict[similarMovieID] + "\tscore: " + str(sim[0]) + "\tstrength: " + str(sim[1]))
+
+# Results:
+#
+# Top 10 similar movies for Star Wars: Episode IV - A New Hope (1977)
+# Star Wars: Episode V - The Empire Strikes Back (1980)	score: 0.9897917106566659	strength: 2355
+# Sanjuro (1962)	score: 0.9877157157535862	strength: 60
+# Raiders of the Lost Ark (1981)	score: 0.9855548278565054	strength: 1972
+# Star Wars: Episode VI - Return of the Jedi (1983)	score: 0.9841248359926177	strength: 2113
+# Run Silent, Run Deep (1958)	score: 0.9791463389332324	strength: 145
+# Laura (1944)	score: 0.9787290037239523	strength: 187
+# Close Shave, A (1995)	score: 0.9782167620836959	strength: 436
+# Wrong Trousers, The (1993)	score: 0.978051224484339	strength: 596
+# Captain Horatio Hornblower (1951)	score: 0.9778921720044944	strength: 81
+# Indiana Jones and the Last Crusade (1989)	score: 0.9774440028650038	strength: 1397
