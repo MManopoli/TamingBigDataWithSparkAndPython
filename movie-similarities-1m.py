@@ -4,7 +4,7 @@ from math import sqrt
 
 #To run on EMR successfully + output results for Star Wars:
 #aws s3 cp s3://sundog-spark/MovieSimilarities1M.py ./
-#aws s3 sp c3://sundog-spark/ml-1m/movies.dat ./
+#aws s3 cp s3://sundog-spark/ml-1m/movies.dat ./
 #spark-submit --executor-memory 1g MovieSimilarities1M.py 260
 
 # movies.dat columns:
@@ -16,7 +16,7 @@ from math import sqrt
 def loadMovieNames():
     movieNames = {}
     with open(
-            "movies.dat",
+            "s3n://sundog-spark/ml-1m/movies.dat",
             encoding='ascii',
             errors='ignore'
     ) as f:
