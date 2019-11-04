@@ -74,7 +74,7 @@ def computeCosineSimilarity(ratingPairs):
 
 
 conf = SparkConf()
-sc = SparkContext(conf = conf)
+sc = SparkContext(conf=conf)
 
 print("\nLoading movie names...")
 nameDict = loadMovieNames()
