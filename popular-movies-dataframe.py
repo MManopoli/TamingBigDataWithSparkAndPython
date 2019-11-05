@@ -72,6 +72,7 @@ for result in top10:
 # Fargo (1996): 508
 # Return of the Jedi (1983): 507
 # Liar Liar (1997): 485
+# ....
 
 # Stop the session
 spark.stop()
