@@ -19,8 +19,9 @@ def mapper(line):
 lines = spark.sparkContext.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/fakefriends.csv")
 people = lines.map(mapper)
 
-# Infer the schema, and register the DataFrame as a table.
+# Create a DataFrame from people and cache it because we're going to do more than one thin with this
 schemaPeople = spark.createDataFrame(people).cache()
+# Infer the schema, and register the DataFrame as a table we can query.
 schemaPeople.createOrReplaceTempView("people")
 
 # SQL can be run over DataFrames that have been registered as a table.
