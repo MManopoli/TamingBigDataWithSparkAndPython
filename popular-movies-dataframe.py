@@ -36,7 +36,7 @@ lines = spark.sparkContext.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSpar
 # 186	302	3	891717742
 # 22	377	1	878887116
 #
-# Convert it to a RDD of Row objects
+# Convert it to a RDD of Row objects with only one column: movieID
 movies = lines.map(lambda x: Row(movieID=int(x.split()[1])))
 
 # Convert that to a DataFrame
@@ -46,14 +46,17 @@ movieDataset = spark.createDataFrame(movies)
 topMovieIDs = movieDataset.groupBy("movieID").count().orderBy("count", ascending=False).cache()
 
 # Show the results at this point:
-
-#|movieID|count|
-#+-------+-----+
-#|     50|  584|
-#|    258|  509|
-#|    100|  508|
-
 topMovieIDs.show()
+
+# +-------+-----+
+# |movieID|count|
+# +-------+-----+
+# |     50|  583|
+# |    258|  509|
+# |    100|  508|
+# |    181|  507|
+# |    294|  485|
+# ....
 
 # Grab the top 10
 top10 = topMovieIDs.take(10)
@@ -63,6 +66,12 @@ print("\n")
 for result in top10:
     # Each row has movieID, count as above.
     print("%s: %d" % (nameDict[result[0]], result[1]))
+
+# Star Wars (1977): 583
+# Contact (1997): 509
+# Fargo (1996): 508
+# Return of the Jedi (1983): 507
+# Liar Liar (1997): 485
 
 # Stop the session
 spark.stop()
