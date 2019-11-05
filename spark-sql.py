@@ -19,7 +19,8 @@ def mapper(line):
 lines = spark.sparkContext.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/fakefriends.csv")
 people = lines.map(mapper)
 
-# Create a DataFrame from people and cache it because we're going to do more than one thin with this
+# Create an official Spark DataFrame from the RDD of Row objects
+# Also, cache the Spark DataFrame because we're going to do more than one thing with it
 schemaPeople = spark.createDataFrame(people).cache()
 # Infer the schema, and register the DataFrame as a table we can query.
 schemaPeople.createOrReplaceTempView("people")
