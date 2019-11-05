@@ -57,3 +57,9 @@ recommendations = model.recommendProducts(userID, 10)
 for recommendation in recommendations:
     print (nameDict[int(recommendation[1])] + \
         " score " + str(recommendation[2]))
+
+# cd ~/
+# source ./activate_default_python_venv.sh
+# cd /home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/movie-recommendations-als.py
+# python movie-recommendations-als.py 200
+#
