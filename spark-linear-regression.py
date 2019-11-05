@@ -13,6 +13,13 @@ if __name__ == "__main__":
 
     # Load up our data and convert it to the format MLLib expects.
     inputLines = spark.sparkContext.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/regression.txt")
+
+    # regression.txt data:
+    #
+    # -1.74,1.66
+    # 1.24,-1.18
+    # 0.29,-0.40
+    # -0.13,0.09
     data = inputLines.map(lambda x: x.split(",")).map(lambda x: (float(x[0]), Vectors.dense(float(x[1]))))
 
     # Convert this RDD to a DataFrame
