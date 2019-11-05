@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     # Convert this RDD to a DataFrame
     colNames = ["label", "features"]
-    df = data.toDF(cols=colNames)
+    df = data.toDF(colNames)
 
     # Note, there are lots of cases where you can avoid going from an RDD to a DataFrame.
     # Perhaps you're importing data from a real database. Or you are using structured streaming
