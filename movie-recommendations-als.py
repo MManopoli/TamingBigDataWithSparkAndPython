@@ -27,7 +27,7 @@ sc.setCheckpointDir('checkpoint')
 print("\nLoading movie names...")
 nameDict = loadMovieNames()
 
-data = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.data")
+data = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u_mod.data")
 
 # u.data columns:
 #
@@ -36,7 +36,7 @@ data = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/m
 # 186	302	3	891717742
 # 22	377	1	878887116
 #
-# Map to a MLLib Rating data structure
+# Map to a MLLib Rating data structure: Rating(User ID, Movie ID, Rating)
 ratings = data.map(lambda l: l.split()).map(lambda l: Rating(int(l[0]), int(l[1]), float(l[2]))).cache()
 
 # Build the recommendation model using Alternating Least Squares
@@ -61,5 +61,21 @@ for recommendation in recommendations:
 # cd ~/
 # source ./activate_default_python_venv.sh
 # cd /home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/movie-recommendations-als.py
-# python movie-recommendations-als.py 200
+# python movie-recommendations-als.py 0
 #
+# Ratings for user ID 0:
+# Star Wars (1977): 5.0
+# Empire Strikes Back, The (1980): 5.0
+# Gone with the Wind (1939): 1.0
+#
+# Top 10 recommendations:
+# Secret Agent, The (1996) score 6.574588427211987
+# Little Princess, The (1939) score 6.5619321858616875
+# Shall We Dance? (1937) score 6.521275755350617
+# Low Down Dirty Shame, A (1994) score 6.458205282417204
+# Love in the Afternoon (1957) score 6.06205588133405
+# Cemetery Man (Dellamorte Dellamore) (1994) score 5.973602194521658
+# Harlem (1993) score 5.950648942160058
+# Fear of a Black Hat (1993) score 5.907738769580926
+# Alphaville (1965) score 5.873394326983904
+# Roommates (1995) score 5.865793104300861
