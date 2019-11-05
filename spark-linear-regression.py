@@ -41,7 +41,7 @@ if __name__ == "__main__":
     trainingDF = trainTest[0]
     testDF = trainTest[1]
 
-    # Now create our linear regression model
+    # Now create our linear regression model with the algorithm parameters we desire
     lir = LinearRegression(maxIter=10, regParam=0.3, elasticNetParam=0.8)
 
     # Train the model using our training data
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     # Now see if we can predict values in our test data.
     # Generate predictions using our linear regression model for all features in our
-    # test dataframe:
+    #  test DataFrame:
     fullPredictions = model.transform(testDF).cache()
 
     # Extract the predictions and the "known" correct labels.
@@ -62,7 +62,6 @@ if __name__ == "__main__":
     # Print out the predicted and actual values for each point
     for prediction in predictionAndLabel:
       print(prediction)
-
 
     # Stop the session
     spark.stop()
