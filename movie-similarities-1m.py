@@ -5,7 +5,9 @@ from math import sqrt
 # Commands:
 #
 # Go to your AWS console home-page and find EMR under Analytics and start a 5 m4.xlarge cluster ($0.06/hr each)
-# Make sure it's a SPARK 2.4.4 cluster
+# - Make sure it's a SPARK 2.4.4 cluster
+# - Check to make sure the instance type you are selecting is available in your region using your ec2 instance page
+#   - As of these notes m4.xlarge is a thing: as noted in the instructions above
 #
 # Make sure to configure the "master node" security groups to allow SSH connections from the correct IP, or you can't connect!
 # e.g. Docker_Tutorial_Instance == 172.31.86.187/32
