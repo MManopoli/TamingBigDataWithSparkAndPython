@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+# The new DataFrame ML libraries are in the "ml" lib.  MLLib is dying.
 from pyspark.ml.regression import LinearRegression
 
 from pyspark.sql import SparkSession
@@ -20,9 +21,14 @@ if __name__ == "__main__":
     # 1.24,-1.18
     # 0.29,-0.40
     # -0.13,0.09
+    #
+    # Could be anything - this is random normalized data...
     data = inputLines.map(lambda x: x.split(",")).map(lambda x: (float(x[0]), Vectors.dense(float(x[1]))))
 
     # Convert this RDD to a DataFrame
+    #
+    # label = thing to predict
+    # feature = Attributes of the object you want to predict the label for
     colNames = ["label", "features"]
     df = data.toDF(colNames)
 
@@ -31,7 +37,7 @@ if __name__ == "__main__":
     # to get your data.
 
     # Let's split our data into training data and testing data
-    trainTest = df.randomSplit([0.5, 0.5])
+    trainTest = df.randomSplit([0.7, 0.3])
     trainingDF = trainTest[0]
     testDF = trainTest[1]
 
