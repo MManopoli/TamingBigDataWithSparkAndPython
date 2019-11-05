@@ -9,7 +9,10 @@ from pyspark.sql import Row
 # 2|GoldenEye (1995)|01-Jan-1995||http://us.imdb.com/M/title-exact?GoldenEye%20(1995)|0|1|1|0|0|0|0|0|0|...
 def loadMovieNames():
     movieNames = {}
-    with open("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.item") as f:
+    with open(
+        "/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u.item",
+        encoding='iso-8859-1'
+    ) as f:
         for line in f:
             fields = line.split('|')
             movieNames[int(fields[0])] = fields[1]
