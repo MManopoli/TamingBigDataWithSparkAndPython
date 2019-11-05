@@ -29,9 +29,12 @@ nameDict = loadMovieNames()
 
 data = sc.textFile("/home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/data/ml-100k/u_mod.data")
 
-# u.data columns:
+# u_mod.data columns (u.data where a user 0 has been custom added):
 #
 # User ID, Movie ID, Rating, Timestamp
+# 0	    50	5	881250949
+# 0	    172	5	881250949
+# 0     133	1	881250949
 # 196	242	3	881250949
 # 186	302	3	891717742
 # 22	377	1	878887116
@@ -45,23 +48,28 @@ rank = 10
 numIterations = 20
 model = ALS.train(ratings, rank, numIterations)
 
+# Gather the userID sent to the python script as the parameter
 userID = int(sys.argv[1])
 
+# Print the user's existing movie ratings
 print("\nRatings for user ID " + str(userID) + ":")
 userRatings = ratings.filter(lambda l: l[0] == userID)
 for rating in userRatings.collect():
-    print (nameDict[int(rating[1])] + ": " + str(rating[2]))
+    print(nameDict[int(rating[1])] + ": " + str(rating[2]))
 
+# Print the algorithm's recommendations for the user
 print("\nTop 10 recommendations:")
 recommendations = model.recommendProducts(userID, 10)
 for recommendation in recommendations:
-    print (nameDict[int(recommendation[1])] + \
+    print(nameDict[int(recommendation[1])] + \
         " score " + str(recommendation[2]))
 
 # cd ~/
 # source ./activate_default_python_venv.sh
 # cd /home/mmanopoli/Udemy/TamingBigDataWithSparkAndPython/movie-recommendations-als.py
 # python movie-recommendations-als.py 0
+#
+# One example of results print-out (algorithm results change each time because no seed set)
 #
 # Ratings for user ID 0:
 # Star Wars (1977): 5.0
