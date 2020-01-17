@@ -1,5 +1,5 @@
 # TamingBigDataWithSparkAndPython
-Repository of materials for Udemy Course: "Taming Big Data with Apache Spark and Python - Hands On!"
+Repository of my notes and code for Udemy Course: "Taming Big Data with Apache Spark and Python - Hands On!"
 
 Super useful course - was worth finally finishing.
 
